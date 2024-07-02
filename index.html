@@ -1,0 +1,120 @@
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário Cerco de Jericó</title>
+    <!-- Other head elements -->
+</head>
+<form action="https://hook.us1.make.com/m3qac7bgdssup8g4foar9jhswqy5ckhk" method="POST">
+    <div class="form-group">
+        <label for="name">Nome:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Número de whatsapp:</label>
+        <input type="tel" class="form-control" id="phone" name="phone" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="sector">Setor:</label>
+        <select class="form-control" id="sector" name="sector" required>
+            <option value="">Selecione o seu setor</option>
+            <option value="animacao">Animação</option>
+            <option value="anjo">Anjo/Líder/Padrinho</option>
+            <option value="cantinho">Cantinho Mariano</option>
+            <option value="capela">Capela</option>
+            <option value="cozinha">Cozinha</option>
+            <option value="coordenacao">Coordenação</option>
+            <option value="evangelizacao">Evangelização</option>
+            <option value="farmacia">Farmácia</option>
+            <option value="ligacao">Ligação</option>
+            <option value="manutencao">Manutenção</option>
+            <option value="musica">Música</option>
+            <option value="secretaria">Secretaria</option>
+            <option value="teatro">Teatro</option>
+            <option value="tropa">Tropa de Elite</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="timeSlot">Horário para o cerco:</label>
+        <select class="form-control" id="timeSlot" name="timeSlot" required>
+            <option value="">Selecione um horário</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 16px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<script>
+    window.onload = function () {
+        // Fetch time slot options from custom endpoint
+        fetch('https://hook.us1.make.com/helmy0tg38334uf4yb413z9klf8ucu5x')
+            .then(response => response.json())
+            .then(data => {
+                const timeSlotSelect = document.getElementById('timeSlot');
+                data.forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot.horario;
+                    option.text = slot.horario;
+                    timeSlotSelect.add(option);
+                });
+            })
+            .catch(error => console.error('Error fetching time slots:', error));
+    };
+</script>
