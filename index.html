@@ -1,4 +1,3 @@
-
 <head>
     <meta charset="UTF-8">
     <title>Formulário Cerco de Jericó</title>
@@ -19,6 +18,17 @@
     <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="acampamento">Em qual acampamento você irá servir?</label>
+        <select class="form-control" id="acampamento" name="acampamento" required>
+            <option value="">Selecione o acampamento</option>
+            <option value="senior">16º Sênior</option>
+            <option value="fac">10º FAC</option>
+        </select>
+        <small><i style="display: inline-block; margin-top: 7px; margin-left: 5px">caso sirva nos dois, selecione
+            qualquer valor</i></small>
     </div>
 
     <div class="form-group">
@@ -58,6 +68,7 @@
         margin-top: 30px;
         margin-bottom: 30px;
     }
+
     body {
         font-family: Arial, sans-serif;
         background-color: #f2f2f2;
