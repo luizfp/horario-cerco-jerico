@@ -110,15 +110,19 @@
 
 <script>
     window.onload = function () {
+        const acampamento = new URLSearchParams(window.location.search).get('acampamento');
+        if (!acampamento) {
+            alert('Link incorreto!');
+        }
         // Fetch time slot options from custom endpoint
-        fetch('https://hook.us1.make.com/helmy0tg38334uf4yb413z9klf8ucu5x')
+        fetch(`https://5cblx2anbf6jdb346npjelbr640stemu.lambda-url.us-east-1.on.aws/?acampamento=${acampamento}`)
             .then(response => response.json())
             .then(data => {
                 const timeSlotSelect = document.getElementById('timeSlot');
                 data.forEach(slot => {
                     const option = document.createElement('option');
                     option.value = slot.horario;
-                    option.text = slot.horario + ' - ' + slot.quantidadeDisponivel + ' vagas'
+                    option.text = slot.horario + ' - ' + slot.vagasDisponiveis + ' vagas'
                     timeSlotSelect.add(option);
                 });
             })
