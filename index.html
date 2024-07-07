@@ -118,6 +118,26 @@
         } else {
             document.getElementById('title').innerHTML = '16º Sênior<br>Reserve seu horário para o Cerco de Jericó';
         }
+
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const input = e.target.value.replace(/\D/g, ''); // Step 2: Remove non-numeric characters
+            let formattedInput = '';
+
+            // Step 3: Format the input
+            if (input.length > 0) {
+                formattedInput += '(' + input.substring(0, 2);
+            }
+            if (input.length >= 3) {
+                formattedInput += ') ' + input.substring(2, 7);
+            }
+            if (input.length > 7) {
+                formattedInput += '-' + input.substring(7, 11);
+            }
+
+            // Step 4: Update the input field
+            e.target.value = formattedInput;
+        });
+
         // Fetch time slot options from custom endpoint
         fetch(`https://5cblx2anbf6jdb346npjelbr640stemu.lambda-url.us-east-1.on.aws/?acampamento=${acampamento}`)
             .then(response => response.json())
@@ -132,23 +152,4 @@
             })
             .catch(error => console.error('Error fetching time slots:', error));
     };
-
-    document.getElementById('phone').addEventListener('input', function(e) {
-        const input = e.target.value.replace(/\D/g, ''); // Step 2: Remove non-numeric characters
-        let formattedInput = '';
-
-        // Step 3: Format the input
-        if (input.length > 0) {
-            formattedInput += '(' + input.substring(0, 2);
-        }
-        if (input.length >= 3) {
-            formattedInput += ') ' + input.substring(2, 7);
-        }
-        if (input.length > 7) {
-            formattedInput += '-' + input.substring(7, 11);
-        }
-
-        // Step 4: Update the input field
-        e.target.value = formattedInput;
-    });
 </script>
