@@ -4,7 +4,7 @@
     <!-- Other head elements -->
 </head>
 <h2 id="title">Reserve seu horário para o Cerco de Jericó</h2>
-<form action="https://hook.us1.make.com/m3qac7bgdssup8g4foar9jhswqy5ckhk" method="POST">
+<form id="reservationForm">
     <div class="form-group">
         <label for="name">Nome:</label>
         <input type="text" class="form-control" id="name" name="name" required>
@@ -151,5 +151,43 @@
                 });
             })
             .catch(error => console.error('Error fetching time slots:', error));
+
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Previne o comportamento padrão de envio do formulário
+
+            // Coleta os valores dos campos do formulário
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const sector = document.getElementById('sector').value;
+            const timeSlot = document.getElementById('timeSlot').value;
+            const acampamento = new URLSearchParams(window.location.search).get('acampamento');
+
+            // Monta um objeto JSON com os valores coletados
+            const formData = {
+                nome: name,
+                telefone: phone,
+                setor: sector,
+                horarioReservado: timeSlot,
+                acampamento: acampamento
+            };
+
+            // Usa fetch para enviar os dados para o endpoint
+            fetch('https://4tuo6rtadqeatwvzizfil3xpaa0zeyiy.lambda-url.us-east-1.on.aws/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Aqui você pode tratar a resposta do servidor, como exibir uma mensagem de sucesso
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // Aqui você pode tratar erros de envio, como exibir uma mensagem de erro
+                });
+        });
     };
 </script>
