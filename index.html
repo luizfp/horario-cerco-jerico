@@ -182,7 +182,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-                    // Aqui você pode tratar a resposta do servidor, como exibir uma mensagem de sucesso
+                    window.location.href = `success.html?nome=${name}&horario=${timeSlot}`;
                 })
                 .catch((error) => {
                     console.error('Error:', error);

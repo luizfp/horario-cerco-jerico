@@ -31,7 +31,17 @@
 <body>
 <div class="success-message">
     <h2>Obrigado!</h2>
-    <p>Seu horário de cerco foi reservado para <strong>''</strong>.</p>
+    <p></p>
 </div>
 </body>
 </html>
+
+<script>
+    window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        const nome = params.get('nome');
+        const horario = params.get('horario');
+        const message = document.querySelector('.success-message p');
+        message.innerHTML = `${nome}, seu horário de cerco foi reservado para <strong>'${horario}'</strong>.`;
+    };
+</script>
