@@ -188,8 +188,7 @@
                         if (data.errorType === 'RESERVA_EXISTENTE') {
                             alert('Você já possui uma reserva de horário para o cerco, não é possível realizar outra.');
                         } else if (data.errorType === 'VAGAS_ESGOTADAS') {
-                            alert(`Vagas esgotadas para o horário <strong>'${timeSlot}'</strong>.
-                            Por favor, selecione outro horário.`);
+                            alert(`Vagas esgotadas para o horário <strong>'${timeSlot}'</strong>. Por favor, selecione outro horário.`);
                         } else {
                             alert('Erro ao realizar reserva. Por favor, tente novamente.');
                         }
