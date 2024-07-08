@@ -236,7 +236,8 @@
                 .catch((error) => {
                     console.error('Error:', error);
                     if (error.customError && error.customError.errorType === 'RESERVA_EXISTENTE') {
-                        alert('Você já possui uma reserva de horário para o cerco, não é possível realizar outra.');
+                        const reservaExistente = JSON.parse(error.customError.existingReservation);
+                        alert(`${reservaExistente.nome}, você já possui uma reserva para o horário "${reservaExistente.horarioReservado}", não é possível realizar outra.`);
                     } else if (error.customError && error.customError.errorType === 'VAGAS_ESGOTADAS') {
                         alert(`Vagas esgotadas para o horário "${timeSlot}". Por favor, selecione outro horário.`);
                     } else {
