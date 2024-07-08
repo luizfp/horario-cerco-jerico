@@ -179,24 +179,30 @@
                 },
                 body: JSON.stringify(formData),
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data:', data);
-                    if (data.ok) {
-                        console.log('Success:', data);
-                        window.location.href = `success.html?nome=${name}&horario=${timeSlot}`;
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
                     } else {
-                        if (data.errorType === 'RESERVA_EXISTENTE') {
-                            alert('Você já possui uma reserva de horário para o cerco, não é possível realizar outra.');
-                        } else if (data.errorType === 'VAGAS_ESGOTADAS') {
-                            alert(`Vagas esgotadas para o horário "${timeSlot}". Por favor, selecione outro horário.`);
-                        } else {
-                            alert('Erro ao realizar reserva. Por favor, tente novamente.');
-                        }
+                        // Since response.json() returns a promise, we need to wait for it to resolve
+                        return response.json().then(err => Promise.reject({
+                            customError: err,
+                            status: response.status
+                        }));
                     }
+                })
+                .then(data => {
+                    console.log('Data: ' + JSON.stringify(data));
+                    window.location.href = `success.html?nome=${name}&horario=${timeSlot}`;
                 })
                 .catch((error) => {
                     console.error('Error:', error);
+                    if (error.customError && error.customError.errorType === 'RESERVA_EXISTENTE') {
+                        alert('Você já possui uma reserva de horário para o cerco, não é possível realizar outra.');
+                    } else if (error.customError && error.customError.errorType === 'VAGAS_ESGOTADAS') {
+                        alert(`Vagas esgotadas para o horário "${timeSlot}". Por favor, selecione outro horário.`);
+                    } else {
+                        alert('Erro ao realizar reserva. Por favor, tente novamente.');
+                    }
                 });
         });
     };
