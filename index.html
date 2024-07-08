@@ -1,7 +1,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário Cerco de Jericó</title>
-    <!-- Other head elements -->
+    <style>
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <h2 id="title">Reserve seu horário para o Cerco de Jericó</h2>
 <form id="reservationForm">
@@ -52,64 +133,15 @@
     <button type="submit" class="btn btn-primary">Reservar Horário</button>
 </form>
 
-<style>
-    h2 {
-        text-align: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-    }
-
-    form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        font-size: 16px;
-    }
-
-    .btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 16px;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .btn:hover {
-        background-color: #45a049;
-    }
-</style>
+<div id="loading">
+    <div class="spinner"></div>
+</div>
 
 <script>
     window.onload = function () {
+        const showLoading = () => document.getElementById('loading').style.display = 'flex';
+        const hideLoading = () => document.getElementById('loading').style.display = 'none';
+
         const acampamento = new URLSearchParams(window.location.search).get('acampamento');
         if (!acampamento) {
             alert('Link incorreto!');
@@ -119,26 +151,8 @@
             document.getElementById('title').innerHTML = '16º Sênior<br>Reserve seu horário para o Cerco de Jericó';
         }
 
-        document.getElementById('phone').addEventListener('input', function(e) {
-            const input = e.target.value.replace(/\D/g, ''); // Step 2: Remove non-numeric characters
-            let formattedInput = '';
-
-            // Step 3: Format the input
-            if (input.length > 0) {
-                formattedInput += '(' + input.substring(0, 2);
-            }
-            if (input.length >= 3) {
-                formattedInput += ') ' + input.substring(2, 7);
-            }
-            if (input.length > 7) {
-                formattedInput += '-' + input.substring(7, 11);
-            }
-
-            // Step 4: Update the input field
-            e.target.value = formattedInput;
-        });
-
         // Fetch time slot options from custom endpoint
+        showLoading();
         fetch(`https://5cblx2anbf6jdb346npjelbr640stemu.lambda-url.us-east-1.on.aws/?acampamento=${acampamento}`)
             .then(response => response.json())
             .then(data => {
@@ -146,14 +160,19 @@
                 data.forEach(slot => {
                     const option = document.createElement('option');
                     option.value = slot.horario;
-                    option.text = slot.horario + ' - ' + slot.vagasDisponiveis + ' vagas'
+                    option.text = slot.horario + ' - ' + slot.vagasDisponiveis + ' vagas';
                     timeSlotSelect.add(option);
                 });
+                hideLoading();
             })
-            .catch(error => console.error('Error fetching time slots:', error));
+            .catch(error => {
+                console.error('Error fetching time slots:', error);
+                hideLoading();
+            });
 
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault(); // Previne o comportamento padrão de envio do formulário
+            showLoading();
 
             // Coleta os valores dos campos do formulário
             const name = document.getElementById('name').value;
@@ -193,6 +212,7 @@
                 .then(data => {
                     console.log('Data: ' + JSON.stringify(data));
                     window.location.href = `success.html?nome=${name}&horario=${timeSlot}`;
+                    hideLoading();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -203,6 +223,7 @@
                     } else {
                         alert('Erro ao realizar reserva. Por favor, tente novamente.');
                     }
+                    hideLoading();
                 });
         });
     };
