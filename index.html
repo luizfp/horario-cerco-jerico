@@ -142,8 +142,6 @@
         const acampamento = new URLSearchParams(window.location.search).get('acampamento');
         if (!acampamento) {
             alert('Link incorreto!');
-        } else if (acampamento === 'fac10') {
-            document.getElementById('title').innerHTML = '10º FAC<br>Reserve seu horário para o Cerco de Jericó';
         } else {
             document.getElementById('title').innerHTML = '17º Sênior<br>Reserve seu horário para o Cerco de Jericó';
         }
