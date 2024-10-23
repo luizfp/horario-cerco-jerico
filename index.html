@@ -97,6 +97,11 @@
     </div>
 
     <div class="form-group">
+        <label for="location">Onde fará o cerco:</label>
+        <input type="text" class="form-control" id="location" name="location" required>
+    </div>
+
+    <div class="form-group">
         <label for="sector">Setor:</label>
         <select class="form-control" id="sector" name="sector" required>
             <option value="">Selecione o seu setor</option>
@@ -194,6 +199,7 @@
             // Coleta os valores dos campos do formulário
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
             const sector = document.getElementById('sector').value;
             const timeSlot = document.getElementById('timeSlot').value;
             const acampamento = new URLSearchParams(window.location.search).get('acampamento');
@@ -202,6 +208,7 @@
             const formData = {
                 nome: name,
                 telefone: phone,
+                localCerco: location,
                 setor: sector,
                 horarioReservado: timeSlot,
                 acampamento: acampamento
