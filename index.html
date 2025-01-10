@@ -147,6 +147,8 @@
         const acampamento = new URLSearchParams(window.location.search).get('acampamento');
         if (!acampamento) {
             alert('Link incorreto!');
+        } else if (acampamento === 'mirim1') {
+            document.getElementById('title').innerHTML = '1º MIRIM<br>Reserve seu horário para o Cerco de Jericó';
         } else {
             document.getElementById('title').innerHTML = '18º SÊNIOR<br>Reserve seu horário para o Cerco de Jericó';
         }
